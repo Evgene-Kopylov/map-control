@@ -13,6 +13,7 @@ struct Camera {
     speed: f32,
     step: f32,
     thickness: f32,
+    prev_mouse_position: (f32, f32),
 }
 
 impl Camera {
@@ -20,9 +21,10 @@ impl Camera {
         Camera {
             x: 0.,
             y: 0.,
-            speed: 300.,
+            speed: 500.,
             step: 100.,
             thickness: 1.,
+            prev_mouse_position: (0., 0.),
         }
     }
 
@@ -50,13 +52,13 @@ impl Camera {
                     LINE_COLOR);
             }
         }
-
     }
 
     fn draw_hexagon(&self) {
+        let initial_position: Vec2 = Vec2::new(200., 300.);
         let pos: Vec2 = Vec2::new(
-            200. * self.step * 0.01,
-            300. * self.step * 0.01
+            initial_position.x * self.step * 0.01,
+            initial_position.y * self.step * 0.01
         );
         draw_hexagon(
             pos.x + self.x,
@@ -70,27 +72,31 @@ impl Camera {
     }
 
     fn update(&mut self, dt: f32) {
-        if is_key_down(KeyCode::Left) {
+        if is_mouse_button_down(MouseButton::Middle) {
+            self.x += mouse_position().0 - self.prev_mouse_position.0;
+            self.y += mouse_position().1 - self.prev_mouse_position.1;
+        }
+        self.prev_mouse_position = mouse_position();
+
+        if is_key_down(KeyCode::Left) || is_key_down(KeyCode::A) {
             self.x -= dt * self.speed;
         }
 
-        if is_key_down(KeyCode::Right) {
+        if is_key_down(KeyCode::Right) || is_key_down(KeyCode::D) {
             self.x += dt * self.speed;
         }
 
-        if is_key_down(KeyCode::Up) {
+        if is_key_down(KeyCode::Up) || is_key_down(KeyCode::W) {
             self.y -= dt * self.speed;
         }
 
-        if is_key_down(KeyCode::Down) {
+        if is_key_down(KeyCode::Down) || is_key_down(KeyCode::S) {
             self.y += dt * self.speed;
         }
 
         let mw = mouse_wheel().1;
         if mw != 0. {
-            // println!("{}", mw);
             let dmw = mw * 0.01 * 0.01 * self.speed;
-
 
             let min_step = 16. * self.thickness;
             if self.step + dmw >= min_step {
@@ -105,10 +111,7 @@ impl Camera {
                 self.step += dmw;
             }
         }
-
     }
-
-
 }
 
 
