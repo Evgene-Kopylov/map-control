@@ -4,7 +4,7 @@ use settings::{
     GROUND_COLOR,
     LINE_COLOR,
 };
-use crate::settings::{SELECTOR_COLOR, TRANSPARENT};
+use crate::settings::{TRANSPARENT};
 
 
 struct Camera {
@@ -27,9 +27,9 @@ impl Camera {
     }
 
     fn draw_coordination_greed(&self) {
-        let mut range_x = ((screen_width() + self.x.abs()) / self.step) as i32;
+        let range_x = ((screen_width() + self.x.abs()) / self.step) as i32;
         for i in -range_x..=range_x {
-            let mut x = (i as f32) * self.step + self.x;
+            let x = (i as f32) * self.step + self.x;
             if x > 0. && x < screen_width() {
                 draw_line(
                     x, 0.,
@@ -39,9 +39,9 @@ impl Camera {
             }
         }
 
-        let mut range_y = ((screen_height() + self.y.abs()) / self.step) as i32;
+        let range_y = ((screen_height() + self.y.abs()) / self.step) as i32;
         for i in -range_y..=range_y {
-            let mut y = (i as f32) * self.step + self.y;
+            let y = (i as f32) * self.step + self.y;
             if y > 0. && y < screen_height() {
                 draw_line(
                     0.,y,
