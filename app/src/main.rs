@@ -12,7 +12,7 @@ struct Camera {
     y: f32,
     speed: f32,
     step: f32,
-    thickness: f32,
+    zoom: f32,
     prev_mouse_position: (f32, f32),
 }
 
@@ -23,15 +23,15 @@ impl Camera {
             y: 0.,
             speed: 500.,
             step: 100.,
-            thickness: 1.,
+            zoom: 1.,
             prev_mouse_position: (0., 0.),
         }
     }
 
     fn draw_coordination_greed(&self) {
-        let range_x = ((screen_width() + self.x.abs()) / self.step) as i32;
+        let range_x = ((screen_width() + self.x.abs()) / (self.step * self.zoom)) as i32;
         for i in -range_x..=range_x {
-            let x = (i as f32) * self.step + self.x;
+            let x = (i as f32) * (self.step * self.zoom) + self.x;
             if x > 0. && x < screen_width() {
                 draw_line(
                     x, 0.,
@@ -41,9 +41,9 @@ impl Camera {
             }
         }
 
-        let range_y = ((screen_height() + self.y.abs()) / self.step) as i32;
+        let range_y = ((screen_height() + self.y.abs()) / (self.step * self.zoom)) as i32;
         for i in -range_y..=range_y {
-            let y = (i as f32) * self.step + self.y;
+            let y = (i as f32) * (self.step * self.zoom) + self.y;
             if y > 0. && y < screen_height() {
                 draw_line(
                     0.,y,
@@ -57,13 +57,13 @@ impl Camera {
     fn draw_hexagon(&self) {
         let initial_position: Vec2 = Vec2::new(200., 300.);
         let pos: Vec2 = Vec2::new(
-            initial_position.x * self.step * 0.01,
-            initial_position.y * self.step * 0.01
+            initial_position.x,
+            initial_position.y
         );
         draw_hexagon(
-            pos.x + self.x,
-            pos.y + self.y,
-            self.step,
+            pos.x * self.zoom + self.x,
+            pos.y * self.zoom + self.y,
+            self.step * self.zoom,
             1.,
             true,
             DARKGRAY,
@@ -98,17 +98,16 @@ impl Camera {
         if mw != 0. {
             let dmw = mw * 0.01 * 0.01 * self.speed;
 
-            let min_step = 16. * self.thickness;
-            if self.step + dmw >= min_step {
+            if self.zoom >= 0.1 || dmw > 0. {
                 let x = mouse_position().0 - self.x;
-                let dx = x * (self.step + dmw) / self.step - x;
+                let dx = x * ((self.step * self.zoom) + dmw) / (self.step * self.zoom) - x;
                 self.x -= dx;
 
                 let y = mouse_position().1 - self.y;
-                let dy = y * (self.step + dmw) / self.step - y;
+                let dy = y * ((self.step * self.zoom) + dmw) / (self.step * self.zoom) - y;
                 self.y -= dy;
 
-                self.step += dmw;
+                self.zoom += dmw / 100.;
             }
         }
     }
