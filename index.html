@@ -17,13 +17,33 @@
             z-index: 0;
         }
     </style>
+    <link rel="stylesheet" href="load_screen/load_screen.css">
 </head>
 
 <body>
 <canvas id="glcanvas" tabindex='1'></canvas>
 <!-- Minified and statically hosted version of https://github.com/not-fl3/macroquad/blob/master/js/mq_js_bundle.js -->
 <script src="https://not-fl3.github.io/miniquad-samples/mq_js_bundle.js"></script>
-<script>load("app/app.wasm");</script> <!-- Your compiled wasm file -->
+
+
+
+
+<div id="loading_screen" class="ring">Загрузка
+    <span></span>
+</div>
+<script>
+    load("app/app.wasm");
+    console.log("загружено");
+    document.getElementById("loading_screen").remove();
+</script> <!-- Your compiled wasm file -->
+<script type='text/javascript'>
+
+</script>
+<!--<div id="loading_screen" class="container">-->
+<!--    <div class="loader"></div>-->
+<!--</div>-->
+
+
 </body>
 
 </html>
