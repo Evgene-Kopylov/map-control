@@ -6,6 +6,7 @@ body
 }
 .ring
 {
+    opacity: 1;
     position:absolute;
     top:90%;
     left:90%;
