@@ -36,26 +36,8 @@
 </div>
 <script>
     load("app/app.wasm");
-
-    setTimeout(function(){
-        var el = $('#loading_screen.ring');
-        if (parseFloat(el.css("opacity")) > 0) {
-            setInterval(function () {
-                if (parseFloat(el.css("opacity")) > 0) {
-                    el.css("opacity", el.css("opacity") - 0.1);
-                };
-                if (parseFloat(el.css("opacity")) <= 0) {
-                    el.remove();
-                    return
-                }
-            }, 70);
-        }
-    },5000);
-
 </script> <!-- Your compiled wasm file -->
-<script type='text/javascript'>
-
-</script>
+<script type='text/javascript' src="load_screen/remove_loadig_effect.js"></script>
 <!--<div id="loading_screen" class="container">-->
 <!--    <div class="loader"></div>-->
 <!--</div>-->
