@@ -18,6 +18,9 @@
         }
     </style>
     <link rel="stylesheet" href="load_screen/load_screen.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
 </head>
 
 <body>
@@ -28,13 +31,16 @@
 
 
 
-<div id="loading_screen" class="ring">Загрузка
+<div id="loading_screen" class="ring">
     <span></span>
 </div>
 <script>
     load("app/app.wasm");
-    console.log("загружено");
-    document.getElementById("loading_screen").remove();
+
+    setTimeout(function(){
+        $('#loading_screen').remove();
+    },5000);
+
 </script> <!-- Your compiled wasm file -->
 <script type='text/javascript'>
 
